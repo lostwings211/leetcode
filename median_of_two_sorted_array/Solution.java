@@ -1,5 +1,5 @@
 public class Solution {
-	public static double findMeidanSortedArrays(int A[], int B[]) {
+	public double findMeidanSortedArrays(int A[], int B[]) {
 		double result;
 		int a_length = (A != null) ? A.length : 0;
 		int b_length = (B != null) ? B.length : 0;
@@ -16,7 +16,7 @@ public class Solution {
 				while ( j < b_length) {
 					combined[index++] = B[j++];
 				}
-				break;
+				break;	
 			}
 
 			if(j == b_length) {
@@ -44,12 +44,5 @@ public class Solution {
 			result =  (combined[total_length/2 - 1] + combined[total_length/2]) /  2.0;
 		}
 		return result;
-	}
-
-	public static void main(String[] args) {
-		int[] A = new int[] {1, 3, 5, 7};
-		int[] B = new int[] {2, 4, 6, 8, 10};
-		double result = findMeidanSortedArrays(A, B);
-		System.out.println("Median is :  " + result);
 	}
 }
