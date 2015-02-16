@@ -1,6 +1,31 @@
 import java.util.*;
 public class Solution {
     public static List<String> generateParenthesis(int n) {
+        List<String> ret =  new ArrayList<String>();
+        if( n <= 0 ) {
+            ret.add("");
+            return ret;
+        }
+        String item = "";
+        dfs(ret, 0, 0, n, item);
+        return ret;
+    }
+    
+    public static void dfs(List<String> ret, int left, int right, int pairs, String item) {
+        
+        if(right > left || left > pairs) {
+            return;
+        }
+        if ( left == right && left == pairs) {
+            ret.add(item);
+            return;
+        }
+
+        dfs(ret, left + 1, right, pairs, item + "(");
+        dfs(ret, left, right + 1, pairs, item + ")");
+    }
+
+    public static List<String> generateParenthesis_iterative(int n) {
         ArrayList<String> result = new ArrayList<String>();
         ArrayList<Integer> diff = new ArrayList<Integer>();
   
@@ -33,7 +58,7 @@ public class Solution {
     }
 
     public static void main(String[] args) {
-        List<String> ret =  generateParenthesis(4);
+        List<String> ret =  generateParenthesis(2);
         for(String curr : ret) {
             System.out.println(curr);
         }
