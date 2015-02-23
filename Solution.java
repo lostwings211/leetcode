@@ -1,31 +1,47 @@
 public class Solution {
-    public class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) {
-            val = x;
-            next = null;
+    public int search(int[] A, int target) {
+        if(A == null || A.length == 0) return -1;
+        if(A.length == 1) {
+            return (A[0] == target) ? 0 : -1;
         }
-    }
-
-    public ListNode swapPairs(ListNode head) {
-        ListNode top = new ListNode(0);
-        top.next =  head;
-        
-        ListNode prev = top;
-        ListNode curr = head;
-        ListNode next = (head != null) ? head.next : null;
-        
-        while(curr != null & next !=  null) {
-            prev.next = next;
-            ListNode tmp = next.next;
-            next.next = curr;
-            curr.next = tmp;
-            
-            prev = prev.next.next;
-            curr = tmp; 
-            next =  (curr != null) ? curr.next : null;
+        int half = -1;
+        int pivot = A.length - 1;
+        int i = 0;
+        int j = A.length -1;
+        while (true) {
+            if(j-i == 1) {
+                if( A[i] > A[j]) {
+                    pivot = i;
+                } 
+                break;
+            }
+            half = (i+j) / 2;
+            if(A[half] >= A[i] && A[half] <= A[j]) {
+                break;
+            }
+            else if(A[half] >= A[i]) {
+                i = half;
+            }
+            else {
+                j = half;
+            }
         }
-        return top.next;
+        
+        i = 0;
+        j = A.length - 1;
+        while ( i <= j) {
+            half = (i + j) / 2;
+            int transformed_half = (half + 1 + pivot) % A.length;
+            if(A[transformed_half] == target) {
+                return transformed_half;
+            }
+            else if (A[transformed_half] < target) {
+                i = half + 1;
+            }
+            else {
+                j = half - 1;
+            }
+        }
+        return -1;
     }
 }
