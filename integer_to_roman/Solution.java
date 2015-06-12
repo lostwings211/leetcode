@@ -1,63 +1,67 @@
 public class Solution {
-    public static class Tuple {
-        public final String symbol;
-        public final int value;
+    public String intToRoman_another(int num) {
+        HashMap<Integer, String> map = new HashMap<Integer, String>();
+        map.put(1, "I");
+        map.put(5, "V");
+        map.put(10, "X");
+        map.put(50, "L");
+        map.put(100, "C");
+        map.put(500, "D");
+        map.put(1000, "M");
         
-        public Tuple (String symbol, int value) {
-            this.symbol = symbol;
-            this.value = value;
-        }
-    }
-
-    public static String intToRoman(int num) {
-        String result = "";
-        // Given the assumption that input is guaranteed to be between 1 to 3999
-        if(num < 1 || num > 3999) {
-            return result;
-        }
-        Tuple[] tuples = new Tuple[] {
-                                        new Tuple("I", 1), 
-                                        new Tuple("V", 5), 
-                                        new Tuple("X", 10),
-                                        new Tuple("L", 50), 
-                                        new Tuple("C", 100), 
-                                        new Tuple("D", 500),
-                                        new Tuple("M", 1000)
-                                     };
-
-        int digits = 0;
-        while (num > 0) {
-            String curr_symbol = "";
-            int remainder = num % 10;
-            switch (remainder) {
-                case 0:
-                case 1: 
+        String ret = "";
+        int base = 1;
+        while(num > 0) {
+            int digit = num % 10;
+            String curr = "";
+            switch (digit) {
+                case 1:
+                    curr = map.get(base);
+                    break;
                 case 2:
+                    curr = map.get(base) + map.get(base);
+                    break;
                 case 3:
-                    for(int i = 0; i < remainder; i++) {
-                        curr_symbol = curr_symbol + tuples[digits].symbol;
-                    }
+                    curr = map.get(base) + map.get(base) + map.get(base);
                     break;
                 case 4:
-                    curr_symbol = tuples[digits].symbol + tuples[digits+1].symbol;
+                    curr = map.get(base) + map.get(5 * base);
                     break;
-                case 5:
+                case 5: 
+                    curr = map.get(5* base);
+                    break;
                 case 6:
-                case 7:
-                case 8:
-                    curr_symbol = tuples[digits+1].symbol;
-                    for(int i = 0; i < remainder - 5; i++) {
-                        curr_symbol = curr_symbol + tuples[digits].symbol;
-                    }
+                    curr = map.get(5 * base) + map.get(base);
+                    break;
+                case 7: 
+                    curr = map.get(5 * base) + map.get(base) + map.get(base);
+                    break;
+                case 8: 
+                    curr = map.get(5 * base) + map.get(base) + map.get(base) + map.get(base);
                     break;
                 case 9:
-                    curr_symbol = tuples[digits].symbol + tuples[digits+2].symbol;
-                    break;    
+                    curr = map.get(base) + map.get(10 * base);
+                    break;
             }
-            result = curr_symbol + result;
+            ret = curr + ret;
             num = num / 10;
-            digits = digits+2;
-        }     
-        return result;
+            base = base * 10;
+        }
+        return ret;
+    }
+    
+    public String intToRoman(int num) {
+        String str = "";    
+        String [] symbol = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};    
+        int [] value = {1000, 900, 500, 400, 100, 90,  50, 40,  10, 9, 5, 4, 1};   
+        int i = 0;
+        while(num != 0) {  
+            while(num >= value[i]) {  
+                num -= value[i];  
+                str = str + symbol[i];  
+            }  
+            i++;
+        }  
+        return str;  
     }
 }
