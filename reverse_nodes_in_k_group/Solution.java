@@ -1,57 +1,44 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
 public class Solution {
-    public class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) {
-            val = x;
-            next = null;
-        }
-    }
-
-
     public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode top =  new ListNode(0);
-        top.next = head;
-        ListNode prev = top;
-        ListNode curr = head;
-        ListNode last = getKthNode(head, k);
-        while (curr != null & last !=null) {
-            ListNode temp = last.next;
-            swapNodes(curr, last);
-            
-            prev.next = last;
-            curr.next = temp;
-            prev =  curr;
-            curr = temp;
-            last = getKthNode(curr, k);
-        }
-        return top.next;
-    }
-    
-    public void swapNodes(ListNode head, ListNode tail) {
-        ListNode prev = null;
-        ListNode curr = head;
-        while(curr !=  tail) {
-            ListNode temp = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = temp;
-        }
-        tail.next = prev;
-    }
-    
-    public ListNode getKthNode(ListNode head, int k) {
-        int count = 1;
-        ListNode curr = head;
-        while(count < k) {
-            if(curr != null) {
-                curr = curr.next;
-            }
-            else {
+        ListNode pre_head = new ListNode(0);
+        pre_head.next = head;
+        ListNode curr_head = pre_head;
+        while(curr_head.next != null) {
+            if(lessthan_k_nodes(curr_head, k) == true) {
                 break;
             }
-            count++;
+            else {
+                ListNode pre = curr_head;
+                ListNode curr = pre.next;
+                for(int i = 0; i < k; i++) {
+                    ListNode next = curr.next;
+                    curr.next = pre;
+                    pre = curr;
+                    curr = next;
+                }
+                ListNode new_curr_head =  curr_head.next;
+                new_curr_head.next = curr;
+                curr_head.next = pre;
+                curr_head = new_curr_head;
+            }
         }
-        return curr;
+        return pre_head.next;
+    }
+    
+    public boolean lessthan_k_nodes(ListNode pre_head, int k) {
+        int count = 0;
+        while(pre_head.next != null) {
+            count++;
+            pre_head = pre_head.next;
+        }
+        return count < k;
     }
 }
